@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>index</title>
+	<link rel="stylesheet" href="">
+	<style>
+
+	</style>
+</head>
+<script src="static/jquery-1.11.1.min.js" type="text/javascript" charset="utf-8"></script>
+<body>
+	<div style='text-align: center'>
+		<p>Please input a question:</p>
+		<input type="text" id="question" name="question"><br><br>
+		<input type="button" value="submit" onclick="question()"><br><br>
+	</div>
+</body>
+<script>
+	function question(){
+		$.ajax({
+			type: 'post',
+			data: {question: $("#question").val()},
+			contentType: "application/x-www-form-urlencoded; charset=utf-8",
+			url: '/test',
+			success: function(result){
+				 output(result)
+			},
+			error: function(xhr, text, type){
+				alert('ERROR!')
+				alert(errorText + ':' + errorType);
+        		alert(xhr.status + ':' + xhr.statusText);
+			}
+		})
+	}
+	function output(data){
+		document.write("<strong> <font size=200px>" + "Feedback:" + "</font> </strong>" + "<br><br>");
+		document.write("<strong>" + "Your Input Question: " + data['inputQ'] + "</strong>" + "<br>");
+		if (data['check'] == 0){
+			document.write("<strong>" + Object.keys(data['dict']).length + " match(es)" + "</strong>" + "<br><br>");
+			for(var i = 0; i < Object.keys(data['dict']).length; i++){
+				var text = "<strong>" + (i+1) + ' th match: ' + "</strong>" + '<br>';
+				text += "<strong>" + 'question: ' + "</strong>" + data['dict'][i]['question'] + '<br>';
+				text += "<strong>" + 'similarity: ' + "</strong>" + data['dict'][i]['similarity'] + '<br>';
+				text += "<strong>" + 'answer: ' + "</strong>" + data['dict'][i]['answer'];
+				text += '-----------------------------------------------------------------------------------------------------------------------------------------------' + "<br><br>";
+				document.write(text);
+			}
+		}
+		else{
+			document.write("0 match" + "<br><br>");
+		}
+		document.write(data['prompt']);
+	}
+</script>
+</html>
