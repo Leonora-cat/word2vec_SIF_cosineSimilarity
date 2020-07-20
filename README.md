@@ -1,4 +1,4 @@
-# word2vec_SIF_cosineSimilarity
+# Word2vec_SIF_cosineSimilarity
 
 This project simulates a intelligent question and answer system. In a web demo, users can input a question and the system will return similar questions together with their similarities and their questions.
 
